@@ -1,24 +1,253 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Cisco Static Routing Lab</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cisco Static Routing & DHCP Lab | CN Lab</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
-        h1 { color: #0366d6; }
-        a { color: #0366d6; text-decoration: none; }
-        a:hover { text-decoration: underline; }
+        :root {
+            --primary: #0366d6;
+            --bg-color: #f4f6f8;
+            --card-bg: #ffffff;
+            --text-main: #24292e;
+            --border: #e1e4e8;
+            --code-bg: #1e1e1e;
+            --code-text: #d4d4d4;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        header {
+            background: var(--card-bg);
+            padding: 25px 30px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border-left: 5px solid var(--primary);
+        }
+        h1 { margin: 0 0 10px 0; color: var(--primary); font-size: 24px; }
+        .meta-badges { display: flex; gap: 15px; font-size: 14px; color: #586069; margin-top: 8px; }
+        .badge { background: #e1f5fe; color: #01579b; padding: 2px 8px; border-radius: 4px; font-weight: 500; }
+        
+        .card {
+            background: var(--card-bg);
+            padding: 25px 30px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h2 { font-size: 18px; border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-top: 0; }
+        
+        /* Topology Visualization Simulation Box */
+        .topology-box {
+            background: #ffffff;
+            border: 2px dashed var(--primary);
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .topology-grid {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .node-card {
+            background: #f8f9fa;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px 18px;
+            min-width: 180px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .node-card h4 { margin: 0 0 5px 0; color: var(--primary); }
+        .node-card p { margin: 0; font-size: 12px; color: #586069; }
+
+        /* Tabs for Routers */
+        .tabs { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .tab-btn {
+            background: #f1f8ff;
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary);
+            transition: all 0.2s;
+        }
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 13px;
+            margin: 0;
+            display: none;
+        }
+        pre.active { display: block; }
+        
+        .footer-links {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        a.btn {
+            background: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        a.btn:hover { opacity: 0.9; }
     </style>
 </head>
 <body>
-    <h1>Cisco Static Routing Lab</h1>
-    <p>Welcome to my network routing showcase built with Cisco Packet Tracer.</p>
-    <h2>Configuration Files</h2>
-    <ul>
-        <li><a href="configs/R1-config.txt" target="_blank">Router 1 Configuration (R1)</a></li>
-        <li><a href="configs/R2-config.txt" target="_blank">Router 2 Configuration (R2)</a></li>
-        <li><a href="configs/R3-config.txt" target="_blank">Router 3 Configuration (R3)</a></li>
-    </ul>
-    <p><a href="https://github.com/vishnu-keer/cisco-static-routing-lab" target="_blank">View GitHub Repository</a></p>
+
+<div class="container">
+    <header>
+        <h1>Cisco Packet Tracer Lab: Static Routing & DHCP</h1>
+        <p>Interactive Network Documentation & Router Configuration Inspector</p>
+        <div class="meta-badges">
+            <span class="badge">CN Lab</span>
+            <span class="badge">Date: 14/10/26</span>
+            <span class="badge">Topology: 3 Routers, 3 Subnets</span>
+        </div>
+    </header>
+
+    <!-- Topology Visualizer -->
+    <div class="card">
+        <h2>Network Topology Visualization</h2>
+        <div class="topology-box">
+            <p><strong>Architecture:</strong> $R_1 \iff R_2 \iff R_3$ with Subnets $N_1, N_2, N_3$[cite: 6]</p>
+            <div class="topology-grid">
+                <div class="node-card">
+                    <h4>Router R1 ($N_1$)</h4>
+                    <p>Subnet: 192.168.1.0/24<br>DHCP Pool Enabled</p>
+                </div>
+                <div class="node-card">
+                    <h4>Router R2 ($N_2$)</h4>
+                    <p>Subnet: 192.168.2.0/24<br>Core Hub & Serial Links</p>
+                </div>
+                <div class="node-card">
+                    <h4>Router R3 ($N_3$)</h4>
+                    <p>Subnet: 192.168.3.0/24<br>DHCP Pool Enabled</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Configuration Viewer -->
+    <div class="card">
+        <h2>Router Configuration Inspector</h2>
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab(event, 'r1')">Router 1 (R1)</button>
+            <button class="tab-btn" onclick="openTab(event, 'r2')">Router 2 (R2)</button>
+            <button class="tab-btn" onclick="openTab(event, 'r3')">Router 3 (R3)</button>
+        </div>
+
+        <pre id="r1" class="active">enable
+configure terminal
+hostname R1
+ip dhcp pool PoolN1
+ network 192.168.1.0 255.255.255.0
+ default-router 192.168.1.1
+ dns-server 8.8.8.8
+ip dhcp excluded-address 192.168.1.1 192.168.1.10
+interface gigabitethernet 0/0
+ ip address 192.168.1.1 255.255.255.0
+ no shutdown
+interface gigabitethernet 0/1
+ ip address 10.0.0.1 255.255.255.252
+ no shutdown
+ip route 192.168.2.0 255.255.255.0 10.0.0.2
+ip route 192.168.3.0 255.255.255.0 10.0.0.2
+end</pre>
+
+        <pre id="r2">enable
+configure terminal
+hostname R2
+ip dhcp pool PoolN2
+ network 192.168.2.0 255.255.255.0
+ default-router 192.168.2.1
+ dns-server 8.8.8.8
+ip dhcp excluded-address 192.168.2.1 192.168.2.10
+interface gigabitethernet 0/0
+ ip address 192.168.2.1 255.255.255.0
+ no shutdown
+interface gigabitethernet 0/1
+ ip address 10.0.0.2 255.255.255.252
+ no shutdown
+interface gigabitethernet 0/2
+ ip address 10.0.1.1 255.255.255.252
+ no shutdown
+ip route 192.168.1.0 255.255.255.0 10.0.0.1
+ip route 192.168.3.0 255.255.255.0 10.0.1.2
+end</pre>
+
+        <pre id="r3">enable
+configure terminal
+hostname R3
+ip dhcp pool PoolN3
+ network 192.168.3.0 255.255.255.0
+ default-router 192.168.3.1
+ dns-server 8.8.8.8
+ip dhcp excluded-address 192.168.3.1 192.168.3.10
+interface gigabitethernet 0/0
+ ip address 192.168.3.1 255.255.255.0
+ no shutdown
+interface gigabitethernet 0/1
+ ip address 10.0.1.2 255.255.255.252
+ no shutdown
+ip route 192.168.1.0 255.255.255.0 10.0.1.1
+ip route 192.168.2.0 255.255.255.0 10.0.1.1
+end</pre>
+
+        <div class="footer-links" style="margin-top: 15px;">
+            <span style="font-size: 13px; color: #586069;">Direct Raw Config Files: 
+                <a href="configs/R1-config.txt" target="_blank">R1</a> | 
+                <a href="configs/R2-config.txt" target="_blank">R2</a> | 
+                <a href="configs/R3-config.txt" target="_blank">R3</a>
+            </span>
+            <a href="https://github.com/vishnu-keer/cisco-static-routing-lab" class="btn" target="_blank">View GitHub Repo</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openTab(evt, routerId) {
+        let pres = document.querySelectorAll('pre');
+        pres.forEach(p => p.classList.remove('active'));
+        
+        let buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(b => b.classList.remove('active'));
+        
+        document.getElementById(routerId).classList.add('active');
+        evt.currentTarget.classList.add('active');
+    }
+</script>
+
 </body>
 </html>
