@@ -23,7 +23,7 @@
             line-height: 1.6;
         }
         .container {
-            max-width: 1000px;
+            max-width: 1050px;
             margin: 0 auto;
         }
         header {
@@ -35,7 +35,7 @@
             border-left: 5px solid var(--primary);
         }
         h1 { margin: 0 0 10px 0; color: var(--primary); font-size: 24px; }
-        .meta-badges { display: flex; gap: 15px; font-size: 14px; color: #586069; margin-top: 8px; }
+        .meta-badges { display: flex; gap: 15px; font-size: 14px; color: #586069; margin-top: 8px; flex-wrap: wrap; }
         .badge { background: #e1f5fe; color: #01579b; padding: 2px 8px; border-radius: 4px; font-weight: 500; }
         
         .card {
@@ -47,36 +47,25 @@
         }
         h2 { font-size: 18px; border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-top: 0; }
         
-        /* Topology Visualization Simulation Box */
-        .topology-box {
+        /* SVG Topology Box */
+        .topology-container {
             background: #ffffff;
-            border: 2px dashed var(--primary);
-            border-radius: 6px;
-            padding: 20px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
             text-align: center;
-            margin-bottom: 20px;
+            overflow-x: auto;
         }
-        .topology-grid {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 15px;
+        svg {
+            width: 100%;
+            max-width: 950px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
         }
-        .node-card {
-            background: #f8f9fa;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 12px 18px;
-            min-width: 180px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-        }
-        .node-card h4 { margin: 0 0 5px 0; color: var(--primary); }
-        .node-card p { margin: 0; font-size: 12px; color: #586069; }
 
         /* Tabs for Routers */
-        .tabs { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; flex-wrap: wrap; }
         .tab-btn {
             background: #f1f8ff;
             border: 1px solid var(--border);
@@ -111,6 +100,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         a.btn {
             background: var(--primary);
@@ -133,29 +124,127 @@
         <div class="meta-badges">
             <span class="badge">CN Lab</span>
             <span class="badge">Date: 14/10/26</span>
-            <span class="badge">Topology: 3 Routers, 3 Subnets</span>
+            <span class="badge">Topology: 3 Routers (R1, R2, R3) & 3 Subnets (N1, N2, N3)</span>
         </div>
     </header>
 
-    <!-- Topology Visualizer -->
+    <!-- Graphical Network Topology Diagram -->
     <div class="card">
-        <h2>Network Topology Visualization</h2>
-        <div class="topology-box">
-            <p><strong>Architecture:</strong> $R_1 \iff R_2 \iff R_3$ with Subnets $N_1, N_2, N_3$[cite: 6]</p>
-            <div class="topology-grid">
-                <div class="node-card">
-                    <h4>Router R1 ($N_1$)</h4>
-                    <p>Subnet: 192.168.1.0/24<br>DHCP Pool Enabled</p>
-                </div>
-                <div class="node-card">
-                    <h4>Router R2 ($N_2$)</h4>
-                    <p>Subnet: 192.168.2.0/24<br>Core Hub & Serial Links</p>
-                </div>
-                <div class="node-card">
-                    <h4>Router R3 ($N_3$)</h4>
-                    <p>Subnet: 192.168.3.0/24<br>DHCP Pool Enabled</p>
-                </div>
-            </div>
+        <h2>Network Topology Graph (Cisco Packet Tracer Simulation)</h2>
+        <div class="topology-container">
+            <svg viewBox="0 0 950 480" xmlns="http://www.w3.org/2000/svg">
+                <!-- Subnet N1 Box -->
+                <rect x="30" y="180" width="270" height="270" rx="6" fill="#f8f9fa" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5"/>
+                <text x="45" y="205" font-family="sans-serif" font-weight="bold" font-size="14" fill="#334155">N1 (192.168.1.0/24)</text>
+
+                <!-- Subnet N2 Box -->
+                <rect x="340" y="180" width="270" height="270" rx="6" fill="#f8f9fa" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5"/>
+                <text x="355" y="205" font-family="sans-serif" font-weight="bold" font-size="14" fill="#334155">N2 (192.168.2.0/24)</text>
+
+                <!-- Subnet N3 Box -->
+                <rect x="650" y="180" width="270" height="270" rx="6" fill="#f8f9fa" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5"/>
+                <text x="665" y="205" font-family="sans-serif" font-weight="bold" font-size="14" fill="#334155">N3 (192.168.3.0/24)</text>
+
+                <!-- Serial Links between Routers -->
+                <line x1="210" y1="90" x2="475" y2="90" stroke="#dc2626" stroke-width="3"/>
+                <line x1="475" y1="90" x2="740" y2="90" stroke="#dc2626" stroke-width="3"/>
+
+                <!-- Router to Switch Links -->
+                <line x1="210" y1="120" x2="165" y2="260" stroke="#0f172a" stroke-width="2"/>
+                <line x1="475" y1="120" x2="475" y2="260" stroke="#0f172a" stroke-width="2"/>
+                <line x1="740" y1="120" x2="785" y2="260" stroke="#0f172a" stroke-width="2"/>
+
+                <!-- Switch to End Devices Links N1 -->
+                <line x1="165" y1="290" x2="90" y2="380" stroke="#0f172a" stroke-width="1.5"/>
+                <line x1="165" y1="290" x2="165" y2="380" stroke="#0f172a" stroke-width="1.5"/>
+                <line x1="165" y1="290" x2="240" y2="380" stroke="#0f172a" stroke-width="1.5"/>
+
+                <!-- Switch to End Devices Links N2 -->
+                <line x1="475" y1="290" x2="400" y2="380" stroke="#0f172a" stroke-width="1.5"/>
+                <line x1="475" y1="290" x2="475" y2="380" stroke="#0f172a" stroke-width="1.5"/>
+                <line x1="475" y1="290" x2="550" y2="380" stroke="#0f172a" stroke-width="1.5"/>
+
+                <!-- Switch to End Devices Links N3 -->
+                <line x1="785" y1="290" x2="710" y2="380" stroke="#0f172a" stroke-width="1.5"/>
+                <line x1="785" y1="290" x2="785" y2="380" stroke="#0f172a" stroke-width="1.5"/>
+                <line x1="785" y1="290" x2="860" y2="380" stroke="#0f172a" stroke-width="1.5"/>
+
+                <!-- Routers -->
+                <!-- R1 -->
+                <g transform="translate(180, 60)">
+                    <rect x="0" y="0" width="60" height="40" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+                    <text x="30" y="25" font-family="sans-serif" font-weight="bold" font-size="14" fill="#0369a1" text-anchor="middle">R1</text>
+                </g>
+                <!-- R2 -->
+                <g transform="translate(445, 60)">
+                    <rect x="0" y="0" width="60" height="40" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+                    <text x="30" y="25" font-family="sans-serif" font-weight="bold" font-size="14" fill="#0369a1" text-anchor="middle">R2</text>
+                </g>
+                <!-- R3 -->
+                <g transform="translate(710, 60)">
+                    <rect x="0" y="0" width="60" height="40" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+                    <text x="30" y="25" font-family="sans-serif" font-weight="bold" font-size="14" fill="#0369a1" text-anchor="middle">R3</text>
+                </g>
+
+                <!-- Switches (Catalyst 2960) -->
+                <!-- S1 -->
+                <g transform="translate(135, 260)">
+                    <rect x="0" y="0" width="60" height="30" rx="4" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+                    <text x="30" y="20" font-family="sans-serif" font-size="11" fill="#334155" text-anchor="middle">Switch</text>
+                </g>
+                <!-- S2 -->
+                <g transform="translate(445, 260)">
+                    <rect x="0" y="0" width="60" height="30" rx="4" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+                    <text x="30" y="20" font-family="sans-serif" font-size="11" fill="#334155" text-anchor="middle">Switch</text>
+                </g>
+                <!-- S3 -->
+                <g transform="translate(755, 260)">
+                    <rect x="0" y="0" width="60" height="30" rx="4" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+                    <text x="30" y="20" font-family="sans-serif" font-size="11" fill="#334155" text-anchor="middle">Switch</text>
+                </g>
+
+                <!-- End Devices N1 -->
+                <g transform="translate(65, 380)">
+                    <rect x="0" y="0" width="50" height="40" rx="4" fill="#ffffff" stroke="#0f172a" stroke-width="1.5"/>
+                    <text x="25" y="25" font-family="sans-serif" font-size="10" fill="#0f172a" text-anchor="middle">PC-1</text>
+                </g>
+                <g transform="translate(140, 380)">
+                    <rect x="0" y="0" width="50" height="40" rx="4" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+                    <text x="25" y="25" font-family="sans-serif" font-size="10" fill="#047857" text-anchor="middle">Server</text>
+                </g>
+                <g transform="translate(215, 380)">
+                    <rect x="0" y="0" width="50" height="40" rx="4" fill="#ffffff" stroke="#0f172a" stroke-width="1.5"/>
+                    <text x="25" y="25" font-family="sans-serif" font-size="10" fill="#0f172a" text-anchor="middle">PC-2</text>
+                </g>
+
+                <!-- End Devices N2 -->
+                <g transform="translate(375, 380)">
+                    <rect x="0" y="0" width="50" height="40" rx="4" fill="#ffffff" stroke="#0f172a" stroke-width="1.5"/>
+                    <text x="25" y="25" font-family="sans-serif" font-size="10" fill="#0f172a" text-anchor="middle">PC-3</text>
+                </g>
+                <g transform="translate(450, 380)">
+                    <rect x="0" y="0" width="50" height="40" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+                    <text x="25" y="25" font-family="sans-serif" font-size="10" fill="#b45309" text-anchor="middle">IP Phone</text>
+                </g>
+                <g transform="translate(525, 380)">
+                    <rect x="0" y="0" width="50" height="40" rx="4" fill="#ffffff" stroke="#0f172a" stroke-width="1.5"/>
+                    <text x="25" y="25" font-family="sans-serif" font-size="10" fill="#0f172a" text-anchor="middle">PC-4</text>
+                </g>
+
+                <!-- End Devices N3 -->
+                <g transform="translate(685, 380)">
+                    <rect x="0" y="0" width="50" height="40" rx="4" fill="#ffffff" stroke="#0f172a" stroke-width="1.5"/>
+                    <text x="25" y="25" font-family="sans-serif" font-size="10" fill="#0f172a" text-anchor="middle">PC-5</text>
+                </g>
+                <g transform="translate(760, 380)">
+                    <rect x="0" y="0" width="50" height="40" rx="4" fill="#fce7f3" stroke="#db2777" stroke-width="1.5"/>
+                    <text x="25" y="25" font-family="sans-serif" font-size="9" fill="#be185d" text-anchor="middle">Special (★)</text>
+                </g>
+                <g transform="translate(835, 380)">
+                    <rect x="0" y="0" width="50" height="40" rx="4" fill="#ffffff" stroke="#0f172a" stroke-width="1.5"/>
+                    <text x="25" y="25" font-family="sans-serif" font-size="10" fill="#0f172a" text-anchor="middle">PC-6</text>
+                </g>
+            </svg>
         </div>
     </div>
 
@@ -172,16 +261,16 @@
 configure terminal
 hostname R1
 ip dhcp pool PoolN1
- network 192.168.1.0 255.255.255.0
- default-router 192.168.1.1
- dns-server 8.8.8.8
+network 192.168.1.0 255.255.255.0
+default-router 192.168.1.1
+dns-server 8.8.8.8
 ip dhcp excluded-address 192.168.1.1 192.168.1.10
 interface gigabitethernet 0/0
- ip address 192.168.1.1 255.255.255.0
- no shutdown
+ip address 192.168.1.1 255.255.255.0
+no shutdown
 interface gigabitethernet 0/1
- ip address 10.0.0.1 255.255.255.252
- no shutdown
+ip address 10.0.0.1 255.255.255.252
+no shutdown
 ip route 192.168.2.0 255.255.255.0 10.0.0.2
 ip route 192.168.3.0 255.255.255.0 10.0.0.2
 end</pre>
@@ -190,19 +279,19 @@ end</pre>
 configure terminal
 hostname R2
 ip dhcp pool PoolN2
- network 192.168.2.0 255.255.255.0
- default-router 192.168.2.1
- dns-server 8.8.8.8
+network 192.168.2.0 255.255.255.0
+default-router 192.168.2.1
+dns-server 8.8.8.8
 ip dhcp excluded-address 192.168.2.1 192.168.2.10
 interface gigabitethernet 0/0
- ip address 192.168.2.1 255.255.255.0
- no shutdown
+ip address 192.168.2.1 255.255.255.0
+no shutdown
 interface gigabitethernet 0/1
- ip address 10.0.0.2 255.255.255.252
- no shutdown
+ip address 10.0.0.2 255.255.255.252
+no shutdown
 interface gigabitethernet 0/2
- ip address 10.0.1.1 255.255.255.252
- no shutdown
+ip address 10.0.1.1 255.255.255.252
+no shutdown
 ip route 192.168.1.0 255.255.255.0 10.0.0.1
 ip route 192.168.3.0 255.255.255.0 10.0.1.2
 end</pre>
@@ -211,21 +300,21 @@ end</pre>
 configure terminal
 hostname R3
 ip dhcp pool PoolN3
- network 192.168.3.0 255.255.255.0
- default-router 192.168.3.1
- dns-server 8.8.8.8
+network 192.168.3.0 255.255.255.0
+default-router 192.168.3.1
+dns-server 8.8.8.8
 ip dhcp excluded-address 192.168.3.1 192.168.3.10
 interface gigabitethernet 0/0
- ip address 192.168.3.1 255.255.255.0
- no shutdown
+ip address 192.168.3.1 255.255.255.0
+no shutdown
 interface gigabitethernet 0/1
- ip address 10.0.1.2 255.255.255.252
- no shutdown
+ip address 10.0.1.2 255.255.255.252
+no shutdown
 ip route 192.168.1.0 255.255.255.0 10.0.1.1
 ip route 192.168.2.0 255.255.255.0 10.0.1.1
 end</pre>
 
-        <div class="footer-links" style="margin-top: 15px;">
+        <div class="footer-links">
             <span style="font-size: 13px; color: #586069;">Direct Raw Config Files: 
                 <a href="configs/R1-config.txt" target="_blank">R1</a> | 
                 <a href="configs/R2-config.txt" target="_blank">R2</a> | 
